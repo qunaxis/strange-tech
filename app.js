@@ -34,7 +34,7 @@ console.log(`NODE_ENV ${nconf.get('NODE_ENV')}`);
 
 var DB_URI = process.env.NODE_ENV == 'production' ? nconf.get('db').MONGODB_URI_HEROKU :  nconf.get('db').MONGODB_URI_LOCAL ;
 
-mongoose.connect(DB_URI, { useMongoClient: true }, function (err) {
+mongoose.connect(nconf.get('MONGODB_URI'), { useMongoClient: true }, function (err) {
   err ? console.log(err) : console.log('MongoDB successfully connected!');;
 });
 
