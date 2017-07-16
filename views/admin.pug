@@ -7,17 +7,16 @@ block styles
 block content
   .container-fluid
     .row
-      .col-4.offset-4
-        h1 Strange Tech
+      .col-4
+        h1
+          a(href="/") Strange Tech
         p Admin Panel
+      .col-4.offset-4.userinfo
+        span #{ user.username }
+        a.btn.btn-secondary(href='/users/logout') Выйти
     .row
-      .col-12.col-sm-12.col-xl-2.jumbotron
-        h2 userinfo
-        p Name: #{ user.username }
-        p Psswd: #{ user.password }
-        a.btn.btn-secondary(href='/users/logout') logout
-      .col-12.col-sm-12.col-xl-5
-      .col-12.col-sm-12.col-xl-5
+      .col-12.col-sm-12.col-xl-6
+        h3 Пользователи
         table.table.table-responsive
           thead
             tr

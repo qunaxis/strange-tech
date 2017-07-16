@@ -1,18 +1,18 @@
-var express = require('express');
-var router = express.Router();
-var passport = require('passport');
+let express   = require('express'),
+    router    = express.Router(),
+    passport  = require('passport');
 
-var User = require('../db/schemas/User');
+let User      = require('../db/schemas/User');
 
 
 
-router.post('/login', function (req, res, next) {
+router.post('/login', (req, res, next) => {
   passport.authenticate('local',
-     function(err, user, info) {
+     (err, user, info) => {
        return err
          ? next(err)
          : user
-           ? req.logIn(user, function(err) {
+           ? req.logIn(user, (err) => {
                return err
                  ? next(err)
                  : res.redirect('/admin'); // TODO: Replace it some later!
@@ -23,36 +23,35 @@ router.post('/login', function (req, res, next) {
    )(req, res, next);
 });
 
-router.get('/logout', function (req, res, next) {
+router.get('/logout', (req, res, next) => {
   req.logout();
   res.redirect('/');
 });
 
-
-router.post('/register', function (req, res, next) {
+router.post('/register', (req, res, next) => {
   var user = new User({
     username: req.body.username,
     password: req.body.password,
     privilegies: 'user'
   });
-  user.save(function(err) {
+  user.save((err) => {
     return err
       ? next(err)
-      : req.logIn(user, function(err) {
+      : req.logIn(user, (err) => {
           return err ? next(err) : res.send('Registration successfully');
         });
   });
 });
 
-router.post('/update', function (req, res, next) {
+router.post('/update', (req, res, next) => {
   var data =  req.body ? req.body : req.user;
   console.log(data);
-  User.findOne({ username: data.username }, function (err, user) {
+  User.findOne({ username: data.username }, (err, user) => {
     if (!err) {
       Object.assign(user, data); // BUG: Если нет user в БД, то серв падает
-      user.save(function (err) {
+      user.save((err) => {
         if (!err) {
-          text = 'User ' + user.username + ' updated'
+          text = `User ${user.username} updated`;
           console.log(text);
           res.json({ message: text });
         } else {
@@ -67,9 +66,9 @@ router.post('/update', function (req, res, next) {
   })
 });
 
-router.post('/delete', function (req, res, next) {
+router.post('/delete', (req, res, next) => {
   console.log(req.body);
-  User.findOneAndRemove(req.body, function(err, user) {
+  User.findOneAndRemove(req.body, (err, user) => {
     if (!err) {
       var text = `User ${ user.username } has been deleted`;
       console.log(text);
@@ -80,5 +79,7 @@ router.post('/delete', function (req, res, next) {
     }
   });
 });
+
+
 
 module.exports = router;

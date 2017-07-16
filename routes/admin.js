@@ -1,10 +1,10 @@
-var express = require('express');
-var router = express.Router();
-var User = require('../db/schemas/User');
+let express   = require('express'),
+    router    = express.Router(),
+    User      = require('../db/schemas/User');
 
 
 
-router.get('/', function (req, res, next) {
+router.get('/', (req, res, next) => {
   User.find({}, (err, users) => {
     if (!err)  {
       res.render('admin', {
@@ -18,8 +18,6 @@ router.get('/', function (req, res, next) {
   });
 });
 
-router.get('/userinfo', function (req, res, next) {
-  res.send(req.user);
-})
+
 
 module.exports = router;

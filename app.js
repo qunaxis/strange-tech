@@ -1,46 +1,39 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var sessions = require('express-session');
-var mongoose = require('mongoose');
+let express      = require('express'),
+    path         = require('path'),
+    favicon      = require('serve-favicon'),
+    logger       = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser   = require('body-parser'),
+    sessions     = require('express-session'),
+    mongoose     = require('mongoose'),
+    fs           = require('fs'),
+    nconf        = require('nconf');
 
-var User = require('./db/schemas/User');
+let User         = require('./db/schemas/User');
 
-var passport = require('passport');
+let passport     = require('passport');
 // var VKontakteStrategy = require('passport-vkontakte').Strategy; TODO: Реализовать потом для админов
-var LocalStrategy = require('passport-local').Strategy;
+let LocalStrategy = require('passport-local').Strategy;
 
 
-var index = require('./routes/index');
-var users = require('./routes/users');
-var admin = require('./routes/admin');
-var orders = require('./routes/orders');
+let index   = require('./routes/index'),
+    users   = require('./routes/users'),
+    admin   = require('./routes/admin'),
+    orders  = require('./routes/orders');
 
-var app = express();
+let app = express();
 
-
-var fs    = require('fs'),
-    nconf = require('nconf');
 
 
 nconf.argv()
    .env()
    .file({ file: './config.json' });
 
-console.log(`NODE_ENV ${nconf.get('NODE_ENV')}`);
+const DB_URI = nconf.get('NODE_ENV') == 'production' ? nconf.get('MONGODB_URI') : nconf.get('MONGODB_URI_LOCAL');
 
-var DB_URI = process.env.NODE_ENV == 'production' ? nconf.get('db').MONGODB_URI_HEROKU :  nconf.get('db').MONGODB_URI_LOCAL ;
-
-mongoose.connect(nconf.get('MONGODB_URI'), { useMongoClient: true }, function (err) {
-  err ? console.log(err) : console.log('MongoDB successfully connected!');;
+mongoose.connect(DB_URI, { useMongoClient: true }, (err) => {
+  err ? console.log(err) : console.log('MongoDB successfully connected!');
 });
-
-// mongoose.connect('mongodb://localhost:27017/strange-tech', { useMongoClient: true }, function (err) {
-//   err ? console.log(err) : console.log('MongoDB successfully connected!');;
-// });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -60,7 +53,7 @@ app.use(passport.session());
 passport.use(new LocalStrategy({
   usernameField: 'username',
   passwordField: 'password'
-}, function(username, password,done){
+}, (username, password,done) => {
   User.findOne({ username : username},function(err,user){
     return err
       ? done(err)
@@ -76,8 +69,8 @@ passport.serializeUser(function(user, done) {
   done(null, user.id);
 });
 
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err,user){
+passport.deserializeUser((id, done) => {
+  User.findById(id, (err,user) => {
     err
       ? done(err)
       : done(null,user);
@@ -87,13 +80,6 @@ passport.deserializeUser(function(id, done) {
 
 app.use('/', index);
 app.use('/users', users);
-
-// // Middleware для проверки залогиненности юзера (пока ОНЛИ АДМИНИТРАТОР) TODO: Обновить при создании системы авторега юзеров после заполнении формы и оплаты
-// app.all('/*', function (req, res, next) {
-//   req.isAuthenticated()
-//     ? next()
-//     : res.redirect('/');
-// });
 
 function loggedIn(req, res, next) {
     if (req.user) {
@@ -114,7 +100,7 @@ function isAdmin(req, res, next) {
 app.use('/admin', loggedIn, isAdmin, admin);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
@@ -130,5 +116,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
 
 module.exports = app;

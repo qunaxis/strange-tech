@@ -1,0 +1,11 @@
+.container-fluid {
+  padding-top: 1em;
+}
+
+.userinfo {
+  text-align: right;
+}
+
+.userinfo span {
+  margin-right: 1em;
+}
