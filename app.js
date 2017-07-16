@@ -21,9 +21,17 @@ var orders = require('./routes/orders');
 
 var app = express();
 
-mongoose.connect('mongodb://localhost:27017/strange-tech', { useMongoClient: true }, function (err) {
+var cfg = require('./config.json');
+
+var DB_URI = process.env.NODE_ENV == 'production' ? cfg.db.uri_heroku : cfg.db.uri_local;
+
+mongoose.connect(DB_URI, { useMongoClient: true }, function (err) {
   err ? console.log(err) : console.log('MongoDB successfully connected!');;
 });
+
+// mongoose.connect('mongodb://localhost:27017/strange-tech', { useMongoClient: true }, function (err) {
+//   err ? console.log(err) : console.log('MongoDB successfully connected!');;
+// });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
