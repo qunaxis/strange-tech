@@ -1,0 +1,53 @@
+extends layout
+
+block styles
+  link(rel='stylesheet', href='/css/admin-main.css')
+
+
+block content
+  .container-fluid
+    .row
+      .col-4.offset-4
+        h1 Strange Tech
+        p Admin Panel
+    .row
+      .col-12.col-sm-12.col-xl-2.jumbotron
+        h2 userinfo
+        p Name: #{ user.username }
+        p Psswd: #{ user.password }
+        a.btn.btn-secondary(href='/users/logout') logout
+      .col-12.col-sm-12.col-xl-5
+      .col-12.col-sm-12.col-xl-5
+        table.table.table-responsive
+          thead
+            tr
+              th #
+              th Username
+              th Password
+              th Privilegies
+              th Del
+          tbody#userlist
+          each user, id in userslist
+            - var userId = user._id
+            tr(id=userId)
+              th(scope='row') #{ id+1 }
+              td #{ user.username }
+              td #{ user.password }
+              td #{ user.privilegies }
+              td
+                button.close(type='button', data-dismiss='modal', aria-label='Close', data-id=userId, onClick="deleteUser(this)")
+                  span(aria-hidden='true') ×
+
+  script.
+    function deleteUser(elem) {
+      elemId = elem.getAttribute('data-id');
+      var tr = document.getElementById(elemId);
+      $.ajax({
+        url: '//localhost:3000/users/delete',
+        data: { _id: elemId },
+        method: 'post'
+        }).done(function(data) {
+          console.log(data);
+          tr.remove();
+      });
+    }

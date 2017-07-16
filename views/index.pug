@@ -1,0 +1,54 @@
+extends layout
+
+block styles
+  link(rel='stylesheet', href='/css/index-main.css')
+
+block content
+  div#bodymovin
+  div#test.container
+    .row
+      .col-2.offset-10
+        button.btn.btn-link(type='button', data-toggle='modal', data-target='#signin') Войти
+        button.btn.btn-link(type='button', data-toggle='modal', data-target='#signup') Регистрация
+
+  #signin.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        form(action='/users/login' method='post')
+          .modal-header
+            h5#exampleModalLabel.modal-title Вход в систему Strange Tech
+            button.close(type='button', data-dismiss='modal', aria-label='Close')
+              span(aria-hidden='true') ×
+          .modal-body
+              input(class="form-control", type='email' name='username' placeholder='Your Email')
+              input(class="form-control", type='password' name='password' placeholder='Your Password')
+          .modal-footer
+            button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+            button.btn.btn-primary(type='Login') Войти
+
+  #signup.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        form(action='/users/register' method='post')
+          .modal-header
+            h5#exampleModalLabel.modal-title Регистрация в системе Strange Tech
+            button.close(type='button', data-dismiss='modal', aria-label='Close')
+              span(aria-hidden='true') ×
+          .modal-body
+            input(class="form-control", ttype='email' name='username' placeholder='Your Email')
+            input(class="form-control", ttype='password' name='password' placeholder='Your Password')
+          .modal-footer
+            button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+            button.btn.btn-primary(type='Register') Зарегистрироваться
+
+  script(src="/js/bodymovin.min.js", type="text/javascript")
+  script.
+    bodymovin.loadAnimation({
+      container: document.getElementById('bodymovin'), // the dom element that will contain the animation
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: '/data.json',
+      rendererSettings: { progressiveLoad:false, preserveAspectRatio: 'xMidYMax slice' }
+    });
+    window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
