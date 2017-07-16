@@ -1,6 +1,6 @@
 {
-  "db": {
-    "uri_heroku": "mongodb://app:app222319@ds159892.mlab.com:59892/strange-tech",
-    "uri_local": "mongodb://localhost:27017/strange-tech"
-  }
+    "db": {
+      "MONGODB_URI_LOCAL": "mongodb://localhost:27017/strange-tech",
+      "MONGODB_URI_HEROKU": "mongodb://app:app222319@ds159892.mlab.com:59892/strange-tech"
+    }
 }

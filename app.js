@@ -21,9 +21,18 @@ var orders = require('./routes/orders');
 
 var app = express();
 
-var cfg = require('./config.json');
 
-var DB_URI = process.env.NODE_ENV == 'production' ? cfg.db.uri_heroku : cfg.db.uri_local;
+var fs    = require('fs'),
+    nconf = require('nconf');
+
+
+nconf.argv()
+   .env()
+   .file({ file: './config.json' });
+
+console.log(`NODE_ENV ${nconf.get('NODE_ENV')}`);
+
+var DB_URI = process.env.NODE_ENV == 'production' ? nconf.get('db').MONGODB_URI_HEROKU :  nconf.get('db').MONGODB_URI_LOCAL ;
 
 mongoose.connect(DB_URI, { useMongoClient: true }, function (err) {
   err ? console.log(err) : console.log('MongoDB successfully connected!');;
