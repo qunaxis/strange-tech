@@ -7,5 +7,5 @@ $(function() {
     path: '/anim/data.json',
     rendererSettings: { progressiveLoad:true, preserveAspectRatio: 'xMidYMax slice' }
   });
-  $(window).scrollTo(0, 10000);
+  window.scrollTo(0,document.body.scrollHeight);
 });
