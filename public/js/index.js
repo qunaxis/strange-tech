@@ -3,6 +3,6 @@ bodymovin.loadAnimation({
   renderer: 'svg',
   loop: true,
   autoplay: true,
-  path: '/data.json',
+  path: '/anim/data.json',
   rendererSettings: { progressiveLoad:true, preserveAspectRatio: 'xMidYMax slice' }
 });
