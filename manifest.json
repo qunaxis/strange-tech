@@ -1,0 +1,13 @@
+{
+  "short_name": "Strange Tech Project",
+  "name": "Strange Tech: Insure You From UFO",
+  "icons": [
+    {
+      "src": "launcher-icon-4x.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "display": "fullscreen",
+  "orientation": "portrait"
+}

@@ -6,13 +6,13 @@ let User      = require('../db/schemas/User');
 
 
 
-router.post('/login', (req, res, next) => {
+router.post('/login', function(req, res, next) {
   passport.authenticate('local',
-     (err, user, info) => {
+     function(err, user, info) {
        return err
          ? next(err)
          : user
-           ? req.logIn(user, (err) => {
+           ? req.logIn(user, function (err) {
                return err
                  ? next(err)
                  : res.redirect('/admin'); // TODO: Replace it some later!
