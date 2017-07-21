@@ -67,12 +67,12 @@ passport.use(new LocalStrategy({
 }));
 
 passport.use(new VKontakteStrategy({
-    clientID:     nconf.get("VKONTAKTE_APP_ID"), // VK.com docs call it 'API ID', 'app_id', 'api_id', 'client_id' or 'apiId' 
+    clientID:     nconf.get("VKONTAKTE_APP_ID"), // VK.com docs call it 'API ID', 'app_id', 'api_id', 'client_id' or 'apiId'
     clientSecret: nconf.get("VKONTAKTE_APP_SECRET"),
-    callbackURL:  "http://localhost:3000/users/auth-vk/callback"
+    callbackURL:  "http://strange-tech.herokuapp.com/users/auth-vk/callback"
   },
   function(accessToken, refreshToken, params, profile, done) {
-    // console.log(params.email); // getting the email 
+    // console.log(params.email); // getting the email
     User.findOrCreate({ vkontakteId: profile.id }, function (err, user) {
       return done(err, user);
     });
