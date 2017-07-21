@@ -22,8 +22,9 @@ block content
             tr
               th #
               th Username
-              th Password
-              th Privilegies
+              th Email
+              th VK ID
+              th Type
               th Del
           tbody#userlist
           each user, id in userslist
@@ -31,8 +32,9 @@ block content
             tr(id=userId)
               th(scope='row') #{ id+1 }
               td #{ user.username }
-              td #{ user.password }
-              td #{ user.privilegies }
+              td #{ user.email }
+              td #{ user.vk_id }
+              td #{ user.type }
               td
                 button.close(type='button', data-dismiss='modal', aria-label='Close', data-id=userId, onClick="deleteUser(this)")
                   span(aria-hidden='true') ×

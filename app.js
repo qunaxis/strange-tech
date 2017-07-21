@@ -57,7 +57,7 @@ passport.use(new LocalStrategy({
   usernameField: 'username',
   passwordField: 'password'
 }, (username, password,done) => {
-  User.findOne({ username : username},function(err,user){
+  User.findOne({ username : username}, (err,user) => {
     return err
       ? done(err)
       : user
@@ -73,7 +73,7 @@ passport.use(new VKontakteStrategy({
     clientSecret: nconf.get("VKONTAKTE_APP_SECRET"),
     callbackURL:  "//strange-tech.herokuapp.com/users/auth-vk/callback"
   },
-  function(accessToken, refreshToken, params, profile, done) {
+  (accessToken, refreshToken, params, profile, done) => {
     User.findOne({ vk_id: profile.id }, (err, user) => {
       if(err) {
         console.log(err);
@@ -127,7 +127,7 @@ function isAdmin(req, res, next) {
   if (req.user.type == 'admin') {
     next();
   } else {
-    res.send('Have not privilegies');
+    res.send('You are not administrator of this project. Idi nahuy.');
   }
 }
 
