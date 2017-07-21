@@ -76,8 +76,13 @@ passport.use(new VKontakteStrategy({
   function(accessToken, refreshToken, params, profile, done) {
     User.findOne({ vk_id: profile.ud }, (err, user) => {
       if(err) {
+        console.log(err);
         return done(err);
+      } else if(user) {
+        console.log('if (user) == true, user: ' + user);
+        return done(null, user);
       } else {
+        console.log('if (user) == false, user before: ' + user);
         user = new User({
           username: profile.displayName,
           vk_id: profile.id,
@@ -85,7 +90,7 @@ passport.use(new VKontakteStrategy({
         });
         user.save(err => {
           if(err) { console.log(err); };
-          console.log('new user' + user);
+          console.log('if (user) == ture, user after: ' + user);
           return done(err, user);
         })
       }
