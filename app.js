@@ -42,7 +42,7 @@ app.set('view engine', 'pug');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-if(nconf.get('NODE_ENV' !== 'production')) {
+if(nconf.get('NODE_ENV') !== 'production') {
   app.use(logger('dev'));
 } else {
   app.use(logger('prod'))
