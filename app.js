@@ -69,7 +69,7 @@ passport.use(new LocalStrategy({
 passport.use(new VKontakteStrategy({
     clientID:     nconf.get("VKONTAKTE_APP_ID"), // VK.com docs call it 'API ID', 'app_id', 'api_id', 'client_id' or 'apiId'
     clientSecret: nconf.get("VKONTAKTE_APP_SECRET"),
-    callbackURL:  "http://strange-tech.herokuapp.com/users/auth-vk/callback"
+    callbackURL:  "//strange-tech.herokuapp.com/users/auth-vk/callback"
   },
   function(accessToken, refreshToken, params, profile, done) {
     // console.log(params.email); // getting the email
