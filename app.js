@@ -73,10 +73,10 @@ passport.use(new VKontakteStrategy({
   },
   function(accessToken, refreshToken, params, profile, done) {
     // console.log(params.email); // getting the email
-    console.log(`accessToken ${accessToken}`);
-    console.log(`refreshToken ${refreshToken}`);
-    console.log(`params ${params}`);
-    console.log(`profile ${profile}`);
+    console.log(accessToken);
+    console.log(refreshToken);
+    console.log(params);
+    console.log(profile);
     // User.findOrCreate({ vkontakteId: profile.id }, function (err, user) {
     //   return done(err, user);
     // });
