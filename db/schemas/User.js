@@ -26,7 +26,7 @@ let UserSchema = new mongoose.Schema({
 let User = mongoose.model('user', UserSchema);
 
 User.findOrCreate = (profile, callback) => {
-  this.findOne({ vk_id: profile.ud }, (err, user) => {
+  User.findOne({ vk_id: profile.ud }, (err, user) => {
     if(err) { callback(err, user) };
     if(user) {
       callback(null, user)
