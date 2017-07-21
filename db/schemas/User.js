@@ -17,7 +17,7 @@ let UserSchema = new mongoose.Schema({
   },
   email: {
     type: String
-  }
+  },
   vk_id: {
     type: Number
   }
