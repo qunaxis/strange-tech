@@ -74,7 +74,7 @@ passport.use(new VKontakteStrategy({
     callbackURL:  "//strange-tech.herokuapp.com/users/auth-vk/callback"
   },
   function(accessToken, refreshToken, params, profile, done) {
-    User.findOne({ vk_id: profile.ud }, (err, user) => {
+    User.findOne({ vk_id: profile.id }, (err, user) => {
       if(err) {
         console.log(err);
         return done(err);
@@ -90,12 +90,11 @@ passport.use(new VKontakteStrategy({
         });
         user.save(err => {
           if(err) { console.log(err); };
-          console.log('if (user) == ture, user after: ' + user);
+          console.log('if (user) == false, user after: ' + user);
           return done(err, user);
         })
       }
-      }
-    )
+    })
   }
 ));
 
