@@ -44,8 +44,6 @@ app.set('view engine', 'pug');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 if(nconf.get('NODE_ENV') !== 'production') {
   app.use(logger('dev'));
-} else {
-  app.use(logger('prod'))
 }
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -77,10 +75,8 @@ passport.use(new VKontakteStrategy({
   },
   function(accessToken, refreshToken, params, profile, done) {
     User.findOne({ vk_id: profile.ud }, (err, user) => {
-      if(err) { return done(err, user); };
-      if(user) {
-        return done(err, user);
-        console.log('old user' + user);
+      if(err) {
+        return done(err);
       } else {
         user = new User({
           username: profile.displayName,
@@ -93,7 +89,8 @@ passport.use(new VKontakteStrategy({
           return done(err, user);
         })
       }
-    })
+      }
+    )
   }
 ));
 
