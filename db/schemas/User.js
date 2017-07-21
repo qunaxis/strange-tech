@@ -30,6 +30,7 @@ User.findOrCreate = (profile, callback) => {
     if(err) { callback(err, user) };
     if(user) {
       callback(null, user)
+      console.log(user);
     } else {
       user = new User({
         username: profile.displayName,
@@ -37,7 +38,8 @@ User.findOrCreate = (profile, callback) => {
         type: 'user'
       });
       user.save(err => {
-        if(err) { console.log(err); }
+        if(err) { console.log(err); };
+        console.log(user);
         callback(null, user)
       })
     }

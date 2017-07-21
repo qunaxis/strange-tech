@@ -103,7 +103,8 @@ function loggedIn(req, res, next) {
 }
 
 function isAdmin(req, res, next) {
-  if (req.user.privilegies == 'admin') {
+  console.log(req.user);
+  if (req.user.type == 'admin') {
     next();
   } else {
     res.send('Have not privilegies');
