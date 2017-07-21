@@ -14,6 +14,7 @@ let User         = require('./db/schemas/User');
 let passport     = require('passport');
 // var VKontakteStrategy = require('passport-vkontakte').Strategy; TODO: Реализовать потом для админов
 let LocalStrategy = require('passport-local').Strategy;
+let VKontakteStrategy = require('passport-vkontakte').Strategy;
 
 
 let index   = require('./routes/index'),
@@ -64,6 +65,19 @@ passport.use(new LocalStrategy({
         : done(null, false, { message: 'Incorrect username.' });
   });
 }));
+
+passport.use(new VKontakteStrategy({
+    clientID:     nconf.get("VKONTAKTE_APP_ID"), // VK.com docs call it 'API ID', 'app_id', 'api_id', 'client_id' or 'apiId' 
+    clientSecret: nconf.get("VKONTAKTE_APP_SECRET"),
+    callbackURL:  "http://localhost:3000/users/auth-vk/callback"
+  },
+  function(accessToken, refreshToken, params, profile, done) {
+    // console.log(params.email); // getting the email 
+    User.findOrCreate({ vkontakteId: profile.id }, function (err, user) {
+      return done(err, user);
+    });
+  }
+));
 
 passport.serializeUser(function(user, done) {
   done(null, user.id);

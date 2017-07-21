@@ -6,7 +6,7 @@ let User      = require('../db/schemas/User');
 
 
 
-router.post('/login', function(req, res, next) {
+router.post('/login', (req, res, next) => {
   passport.authenticate('local',
      function(err, user, info) {
        return err
@@ -22,6 +22,15 @@ router.post('/login', function(req, res, next) {
      }
    )(req, res, next);
 });
+
+router.get('/auth-vk', passport.authenticate('vkontakte'));
+
+router.get('/auth-vk/callback',
+  passport.authenticate('vkontakte', {
+    successRedirect: '/',
+    failureRedirect: '/login'
+  })
+);
 
 router.get('/logout', (req, res, next) => {
   req.logout();

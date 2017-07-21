@@ -1,3 +1,6 @@
 {
-  "MONGODB_URI_LOCAL": "mongodb://192.168.0.11:27017/strange-tech"
+  "MONGODB_URI": "mongodb://app:app222319@ds159892.mlab.com:59892/heroku_7d9lw8hr",
+  "MONGODB_URI_LOCAL": "mongodb://192.168.0.11:27017/strange-tech",
+  "VKONTAKTE_APP_ID": 6121388,
+  "VKONTAKTE_APP_SECRET": "veq9qB2BRNqIjbr2jGEy"
 }
