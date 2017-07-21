@@ -72,18 +72,13 @@ passport.use(new VKontakteStrategy({
     callbackURL:  "//strange-tech.herokuapp.com/users/auth-vk/callback"
   },
   function(accessToken, refreshToken, params, profile, done) {
-    // console.log(params.email); // getting the email
-    console.log(accessToken);
-    console.log(refreshToken);
-    console.log(params);
-    console.log(profile);
-    // User.findOrCreate({ vkontakteId: profile.id }, function (err, user) {
-    //   return done(err, user);
-    // });
+    User.findOrCreate(profile, (err, user) => {
+      return done(err, user);
+    });
   }
 ));
 
-passport.serializeUser(function(user, done) {
+passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
