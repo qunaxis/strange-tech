@@ -42,7 +42,11 @@ app.set('view engine', 'pug');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+if(nconf.get('NODE_ENV' !== 'production')) {
+  app.use(logger('dev'));
+} else {
+  app.use(logger('prod'))
+}
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -72,9 +76,24 @@ passport.use(new VKontakteStrategy({
     callbackURL:  "//strange-tech.herokuapp.com/users/auth-vk/callback"
   },
   function(accessToken, refreshToken, params, profile, done) {
-    User.findOrCreate(profile, (err, user) => {
-      return done(err, user);
-    });
+    User.findOne({ vk_id: profile.ud }, (err, user) => {
+      if(err) { return done(err, user); };
+      if(user) {
+        return done(err, user);
+        console.log('old user' + user);
+      } else {
+        user = new User({
+          username: profile.displayName,
+          vk_id: profile.id,
+          type: 'user'
+        });
+        user.save(err => {
+          if(err) { console.log(err); };
+          console.log('new user' + user);
+          return done(err, user);
+        })
+      }
+    })
   }
 ));
 
