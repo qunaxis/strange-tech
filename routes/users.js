@@ -7,6 +7,7 @@ let User      = require('../db/schemas/User');
 
 
 router.post('/login', (req, res, next) => {
+  // TODO: Исправить логин через имя юзера на логин по email
   passport.authenticate('local',
      function(err, user, info) {
        return err
@@ -15,7 +16,7 @@ router.post('/login', (req, res, next) => {
            ? req.logIn(user, function (err) {
                return err
                  ? next(err)
-                 : res.redirect('/admin'); // TODO: Replace it some later!
+                 : res.redirect('/admin'); // TODO: Исправить редирект после удачной аутентификации
                 //  : res.send('Auth successfully');
              })
            : res.redirect('/');
@@ -57,20 +58,25 @@ router.post('/update', (req, res, next) => {
   console.log(data);
   User.findOne({ username: data.username }, (err, user) => {
     if (!err) {
-      Object.assign(user, data); // BUG: Если нет user в БД, то серв падает
-      user.save((err) => {
-        if (!err) {
-          text = `User ${user.username} updated`;
-          console.log(text);
-          res.json({ message: text });
-        } else {
-          console.error(err);
-          res.json({ message: err });
-        }
-      });
+      if (user) {
+        Object.assign(user, data);
+        user.save((err) => {
+          if (!err) {
+            text = `User ${user.username} updated`;
+            console.log(text);
+            res.json({ message: text });
+          } else {
+            console.error(err);
+            res.json({ message: err });
+          }
+        });
+      } else {
+        console.error(err);
+        res.json({ message: 'Failed update' + err });
+      }
     } else {
       console.error(err);
-      res.json({ message: 'Failed update' });
+      res.json({ message: 'Failed update' + err });
     }
   })
 });
